@@ -26,6 +26,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.modifier.modifierLocalMapOf
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.BaselineShift
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
@@ -55,60 +60,50 @@ class MainActivity : ComponentActivity() {
 }
 
 
-
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Box(
-        modifier = Modifier.background(Color.Green)
-            .width(500.dp)
-            .height(500.dp),
-        contentAlignment = Alignment.Center
-    ){
-        Box(
-            modifier = Modifier.background(Color.Blue)
-
-        ){
-            Text(
-                text = "The box is equivalent to the stack in flutter",
-                fontSize = 40.sp
-            )
-        }
-    }
+fun Greeting(name: String, modifier: Modifier){
+    Text(
+        text = name,
+        modifier = modifier
+    )
 }
 
-
-@Composable
-fun RowScope.CustomItem(weight: Float, color: Color){
-    Surface(
-        modifier = Modifier
-            .width(200.dp)
-            .height(50.dp)
-            .weight(weight),
-        color = color
-    ) { }
-}
 
 
 @Preview(showBackground = true, name = "Emmanuel")
 @Composable
 fun GreetingPreview() {
     MyApplicationTheme {
-        Greeting(name = "")
-//        Row(
-//            modifier = Modifier.fillMaxSize(),
-//            verticalAlignment = Alignment.CenterVertically,
-//            horizontalArrangement = Arrangement.SpaceBetween
-//        ) {
-//            CustomItem(weight = 3f, color = MaterialTheme.colorScheme.primary)
-//            CustomItem(weight = 2f, color = MaterialTheme.colorScheme.secondary)
-//        }
+        SuperScriptText(normalText = "My name is", superText = "Emmanuel")
     }
 }
 
 
-//@Composable
-//fun CustomText(text: String){
-//    Text(
-//        text = text,
-//    )
-//}
+
+@Composable
+fun SuperScriptText(
+    normalText: String,
+    superText: String
+){
+    Text(
+        buildAnnotatedString {
+            withStyle(
+                style = SpanStyle(
+                    fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                    fontWeight = FontWeight.Bold
+                )
+            ){
+                append(normalText)
+            }
+            withStyle(
+                style = SpanStyle(
+                    fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                    fontWeight = FontWeight.Medium,
+                    baselineShift = BaselineShift.Superscript
+                )
+            ){
+                append(superText)
+            }
+        }
+    )
+}
