@@ -48,9 +48,10 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Column {
                         Greeting(
-                            name = "Android, this is my first",
+                            name = "Hello Android, this is my first android project",
                             modifier = Modifier.padding(innerPadding)
                         )
+                        ExpandableText()
                     }
 
                 }
@@ -74,7 +75,7 @@ fun Greeting(name: String, modifier: Modifier){
 @Composable
 fun GreetingPreview() {
     MyApplicationTheme {
-        SuperScriptText(normalText = "My name is", superText = "Emmanuel")
+        ExpandableText()
     }
 }
 
