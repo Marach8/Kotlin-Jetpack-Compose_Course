@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myapplication.ui.theme.MyApplicationTheme
+import com.example.myapplication.ui.theme.TextFieldExample
 
 
 class MainActivity : ComponentActivity() {
@@ -47,11 +48,12 @@ class MainActivity : ComponentActivity() {
             MyApplicationTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Column {
-                        Greeting(
-                            name = "Hello Android, this is my first android project",
-                            modifier = Modifier.padding(innerPadding)
-                        )
-                        ExpandableText()
+//                        Greeting(
+//                            name = "Hello Android, this is my first android project",
+//                            modifier = Modifier.padding(innerPadding)
+//                        )
+//                        ExpandableText()
+                        TextFieldExample()
                     }
 
                 }
