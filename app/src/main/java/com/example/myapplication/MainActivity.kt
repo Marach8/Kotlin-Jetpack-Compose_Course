@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
@@ -53,7 +54,18 @@ class MainActivity : ComponentActivity() {
 //                        )
 //                        ExpandableText()
 //                        LoadCoilImage()
-                        PasswordField()
+//                        PasswordField()
+                        GradientButton(
+                            text = "Button",
+                            textColor = Color.White,
+                            onClick = {},
+                            gradient = Brush.horizontalGradient(
+                                colors = listOf(
+                                    Color.Blue,
+                                    Color.Yellow
+                                )
+                            )
+                        )
                     }
 
                 }
