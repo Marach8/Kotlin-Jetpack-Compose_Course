@@ -5,13 +5,16 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -45,25 +48,36 @@ import com.example.myapplication.ui.theme.MyApplicationTheme
 
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             MyApplicationTheme {
-                val persons = PersonRepo().getPersons()
+                val sections = listOf("A", "B", "C", "D", "E")
                 LazyColumn (
-                    modifier = Modifier.padding(
-                        all = 20.dp
-                    ),
+                    modifier = Modifier.padding(20.dp),
                     verticalArrangement = Arrangement.spacedBy(20.dp),
                     contentPadding = PaddingValues(all = 20.dp)
                 ){
-                    itemsIndexed(
-                        items = persons,
-                        key = {_, person -> person.id}
-                    ){ index, person ->
-                        Log.d("Activiy", index.toString())
-                        CustomRowItem(person = person)
+                    sections.forEach{ section ->
+                        stickyHeader {
+                            Text(
+                                text = "section $section",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(Color.LightGray)
+                                    .padding(20.dp)
+                            )
+                        }
+                        items(10){
+                            Text(
+                                text = "item $it from section $section",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(15.dp)
+                            )
+                        }
                     }
                 }
 //                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
