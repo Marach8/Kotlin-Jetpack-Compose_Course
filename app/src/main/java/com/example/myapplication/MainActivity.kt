@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -8,14 +9,20 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -33,6 +40,7 @@ import coil.compose.ImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
+import com.example.myapplication.repository.PersonRepo
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 
@@ -42,33 +50,51 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyApplicationTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column (
-                        modifier = Modifier.padding(innerPadding).fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-//                        Greeting(
-//                            name = "Hello Android, this is my first android project",
-//                            modifier = Modifier.padding(innerPadding)
-//                        )
-//                        ExpandableText()
-//                        LoadCoilImage()
-//                        PasswordField()
-                        GradientButton(
-                            text = "Button",
-                            textColor = Color.White,
-                            onClick = {},
-                            gradient = Brush.horizontalGradient(
-                                colors = listOf(
-                                    Color.Blue,
-                                    Color.Yellow
-                                )
-                            )
-                        )
+                val persons = PersonRepo().getPersons()
+                LazyColumn (
+                    modifier = Modifier.padding(
+                        all = 20.dp
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(20.dp),
+                    contentPadding = PaddingValues(all = 20.dp)
+                ){
+                    itemsIndexed(
+                        items = persons,
+                        key = {_, person -> person.id}
+                    ){ index, person ->
+                        Log.d("Activiy", index.toString())
+                        CustomRowItem(person = person)
                     }
-
                 }
+//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+//                    Column (
+//                        modifier = Modifier.padding(innerPadding).fillMaxSize(),
+//                        verticalArrangement = Arrangement.Center,
+//                        horizontalAlignment = Alignment.CenterHorizontally
+//                    ) {
+//                        val persons = PersonRepo().getPersons()
+//
+////                        Greeting(
+////                            name = "Hello Android, this is my first android project",
+////                            modifier = Modifier.padding(innerPadding)
+////                        )
+////                        ExpandableText()
+////                        LoadCoilImage()
+////                        PasswordField()
+////                        GradientButton(
+////                            text = "Button",
+////                            textColor = Color.White,
+////                            onClick = {},
+////                            gradient = Brush.horizontalGradient(
+////                                colors = listOf(
+////                                    Color.Blue,
+////                                    Color.Yellow
+////                                )
+////                            )
+////                        )
+//                    }
+//
+//                }
             }
         }
     }
