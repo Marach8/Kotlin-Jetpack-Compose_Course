@@ -22,10 +22,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -54,32 +60,33 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyApplicationTheme {
-                val sections = listOf("A", "B", "C", "D", "E")
-                LazyColumn (
-                    modifier = Modifier.padding(20.dp),
-                    verticalArrangement = Arrangement.spacedBy(20.dp),
-                    contentPadding = PaddingValues(all = 20.dp)
-                ){
-                    sections.forEach{ section ->
-                        stickyHeader {
-                            Text(
-                                text = "section $section",
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(Color.LightGray)
-                                    .padding(20.dp)
-                            )
-                        }
-                        items(10){
-                            Text(
-                                text = "item $it from section $section",
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(15.dp)
-                            )
-                        }
-                    }
-                }
+                TextFieldWithWithCharLimit()
+//                val sections = listOf("A", "B", "C", "D", "E")
+//                LazyColumn (
+//                    modifier = Modifier.padding(20.dp),
+//                    verticalArrangement = Arrangement.spacedBy(20.dp),
+//                    contentPadding = PaddingValues(all = 20.dp)
+//                ){
+//                    sections.forEach{ section ->
+//                        stickyHeader {
+//                            Text(
+//                                text = "section $section",
+//                                modifier = Modifier
+//                                    .fillMaxWidth()
+//                                    .background(Color.LightGray)
+//                                    .padding(20.dp)
+//                            )
+//                        }
+//                        items(10){
+//                            Text(
+//                                text = "item $it from section $section",
+//                                modifier = Modifier
+//                                    .fillMaxWidth()
+//                                    .padding(15.dp)
+//                            )
+//                        }
+//                    }
+//                }
 //                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
 //                    Column (
 //                        modifier = Modifier.padding(innerPadding).fillMaxSize(),
@@ -88,24 +95,20 @@ class MainActivity : ComponentActivity() {
 //                    ) {
 //                        val persons = PersonRepo().getPersons()
 //
-////                        Greeting(
-////                            name = "Hello Android, this is my first android project",
-////                            modifier = Modifier.padding(innerPadding)
-////                        )
-////                        ExpandableText()
-////                        LoadCoilImage()
-////                        PasswordField()
-////                        GradientButton(
-////                            text = "Button",
-////                            textColor = Color.White,
-////                            onClick = {},
-////                            gradient = Brush.horizontalGradient(
-////                                colors = listOf(
-////                                    Color.Blue,
-////                                    Color.Yellow
-////                                )
-////                            )
-////                        )
+//                        ExpandableText()
+//                        LoadCoilImage()
+//                        PasswordField()
+//                        GradientButton(
+//                            text = "Button",
+//                            textColor = Color.White,
+//                            onClick = {},
+//                            gradient = Brush.horizontalGradient(
+//                                colors = listOf(
+//                                    Color.Blue,
+//                                    Color.Yellow
+//                                )
+//                            )
+//                        )
 //                    }
 //
 //                }
@@ -116,11 +119,35 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun Greeting(name: String, modifier: Modifier){
-    Text(
-        text = name,
-        modifier = modifier
-    )
+fun TextFieldWithWithCharLimit(){
+    Column(
+        modifier = Modifier
+            .padding(2.dp)
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        var text by remember { mutableStateOf("") }
+        val maxCount = 10
+
+        OutlinedTextField(
+            value = text,
+            onValueChange = {
+                if(it.length <= maxCount){
+                    text = it
+                }
+            },
+            label = {Text(text = "Name")},
+            placeholder = {Text("Enter name here")},
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedPlaceholderColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                focusedTextColor = Color.Black,
+                cursorColor = Color.Black,
+
+            )
+        )
+    }
 }
 
 
@@ -129,36 +156,8 @@ fun Greeting(name: String, modifier: Modifier){
 @Composable
 fun GreetingPreview() {
     MyApplicationTheme {
-        ExpandableText()
+        TextFieldWithWithCharLimit()
     }
 }
 
 
-
-@Composable
-fun LoadCoilImage(){
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ){
-        val painter = rememberAsyncImagePainter(
-            ImageRequest.Builder(LocalContext.current)
-                .data(data = "https://fastly.picsum.photos/id/834/200/300.jpg?hmac=9hu4aro5r8PEFwzVlhizygx4urxyeGGjgyMRXUgKOsE")
-                .apply(
-                    block = fun ImageRequest.Builder.() {
-                        //placeholder(R.drawable.google)
-                    }
-                ).build()
-        )
-        val painterState = painter.state;
-        Image(
-            painter = painter,
-            contentDescription = "this is an image"
-        )
-        if(painterState is AsyncImagePainter.State.Loading){
-            CircularProgressIndicator(
-                color = Color.White
-            )
-        }
-    }
-}
